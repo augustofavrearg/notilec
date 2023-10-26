@@ -1,0 +1,19 @@
+goalkeeper_site:
+    jornada_1:
+      url: https://www.fcf.cat/resultats/2324/futbol-7/prebenjami-s7/grup-1/jornada-1
+      queries:
+        goalkeeper_game_links: '.resultats-w-resultat a'
+        game_players: ".oswald + td"
+        game_goalkeeper: ".oswald"
+    jornada_2:
+      url: https://www.fcf.cat/resultats/2324/futbol-7/prebenjami-s7/grup-1/jornada-1
+      queries:
+        goalkeeper_game_links: '.resultats-w-resultat a'
+        game_players: ".oswald + td"
+        game_goalkeeper: ".oswald"
+
+
+
+
+        
+  

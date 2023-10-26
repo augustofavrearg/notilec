@@ -1,0 +1,13 @@
+news_site:
+  infobae:
+    url: https://www.infobae.com
+    queries:
+      homepage_article_links: '.headline-link'
+      article_body: '.paragraph'
+      article_title: '.article-headline'
+  clarin:
+    url: https://www.clarin.com/
+    queries:
+      homepage_article_links: '.classname selector'
+      article_body: '.classname selector'
+      article_title: '.classname selector'
