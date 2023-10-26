@@ -8,6 +8,12 @@ news_site:
   clarin:
     url: https://www.clarin.com/
     queries:
-      homepage_article_links: '.classname selector'
-      article_body: '.classname selector'
-      article_title: '.classname selector'
+      homepage_article_links: '.eQzoJk'
+      article_body: '.StoryTextContainer'
+      article_title: '.storyTitle'
+  nacion:
+    url: https://www.lanacion.com.ar/
+    queries:
+      homepage_article_links: '.ln-link'
+      article_body: '.com-title'
+      article_title: '.com-paragraph'
