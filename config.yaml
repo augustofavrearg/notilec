@@ -23,4 +23,10 @@ news_site:
       homepage_article_links: '.p12-separator--right'
       article_body: '.ff-16px-w700'
       article_title: '.article-main-content'
+  am24:
+    url: https://www.a24.com/
+    queries:
+      homepage_article_links: '.news-link'
+      article_body: '.news-hero-title'
+      article_title: '.article-body'
 
