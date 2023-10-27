@@ -4,6 +4,10 @@ import news_page_objects as news
 import re
 import datetime
 import csv
+
+import mysql.connector
+from mysql.connector import Error
+
 from requests.exceptions import HTTPError
 from urllib3.exceptions import MaxRetryError
 
@@ -16,7 +20,7 @@ logger = logging.getLogger(__name__)
 is_well_formed_link = re.compile(r'^https?://.+/.+$') #https://example.com/hello
 is_root_path = re.compile(r'^/.+$') #/some-text
 
-def _news_scraper(news_site_uid):
+def _news_scraper(news_site_uid, db_config):
     host = config()['news_site'][news_site_uid]['url']
     logging.info('Beggining scraper for {}'.format(host))
     homepage = news.HomePage(news_site_uid, host)
@@ -31,6 +35,7 @@ def _news_scraper(news_site_uid):
             
 
     _save_articles(news_site_uid, articles)
+    persist_articles_to_mysql(articles, db_config)
 
 def _save_articles(news_site_uid, articles):
     now = datetime.datetime.now().strftime('%Y_%m_%d')
@@ -38,7 +43,6 @@ def _save_articles(news_site_uid, articles):
         news_site_uid = news_site_uid,
         datetime = now
     )
-
 
     csv_headers = list(filter(lambda property: not property.startswith('_'), dir(articles[0])))
     
@@ -49,6 +53,35 @@ def _save_articles(news_site_uid, articles):
             row = [str(getattr(article, prop)) for prop in csv_headers]
             writer.writerow(row)
 
+def persist_articles_to_mysql(articles, db_config):
+    try:
+        # Establece una conexión a la base de datos MySQL
+        connection = mysql.connector.connect(**db_config)
+
+        if connection.is_connected():
+            cursor = connection.cursor()
+
+            for article in articles:
+                title = article.title[0] if article.title else None
+                
+                body = '\n'.join(article.body) if article.body else None
+
+                # Ejemplo de consulta SQL para insertar un artículo en la tabla
+                insert_query = "INSERT INTO articulos (titulo, contenido) VALUES (%s, %s)"
+                data = (title, body)
+
+                cursor.execute(insert_query, data)
+                connection.commit()
+
+            print("Artículos almacenados en la base de datos.")
+
+    except Error as e:
+        print("Error al conectarse a la base de datos:", e)
+
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
 
 
 
@@ -81,6 +114,7 @@ def _build_link(host, link):
 
 
 if __name__ == '__main__':
+
     parser = argparse.ArgumentParser()
 
     new_site_choices = list(config()['news_site'].keys())
@@ -90,4 +124,16 @@ if __name__ == '__main__':
                         choices= new_site_choices)
     
     args = parser.parse_args()
-    _news_scraper(args.news_site)
+    db_config = {
+        'host': '127.0.0.1',
+        'database': 'newscraper',
+        'user': 'root',
+        'password': 'root'
+    }
+
+    _news_scraper(args.news_site, db_config)
+
+   
+    
+
+    
