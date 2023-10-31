@@ -1,15 +1,10 @@
 export function searchNews(){
-
     if (!localStorage['news']){
         localStorage['news'] = '[]';
     }
-
-    
     let news = localStorage['news'];
     news = JSON.parse(news);
     return news;
-
-  
 }
 
 export function saveNews(newItem: any) {

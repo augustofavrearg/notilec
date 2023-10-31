@@ -16,18 +16,36 @@ const NewsList: React.FC = () => {
   }, []);
 
   const search = () =>{
-
     let resultado = searchNews();
     setNews(resultado);
   }
 
   const pruebaLocalStorage = () =>{
     const ejemplo = {
+        id:"123",
         dato:"dati",
         hora:"123"
     }
     saveNews(ejemplo);
   }
+
+  const datos = [
+    {
+      "id": "123",
+      "title":"1233234234",
+      "body":"12312312"
+    },
+    {
+      "id": "123",
+      "title":"1233234234",
+      "body":"12312312"
+    },
+    {
+      "id": "123",
+      "title":"1233234234",
+      "body":"12312312"
+    }
+  ]
 
   return (
     <IonPage>
@@ -58,11 +76,11 @@ const NewsList: React.FC = () => {
             </IonItem>
             <IonGrid className="table">
                 
-            {news.map((item) => (
+            {datos.map((item) => (
                 <IonRow key={item.id}>
                 <IonCol>
                     <IonCardTitle>
-                        <IonCardTitle>{item.title}</IonCardTitle>
+                        <IonCardTitle>{item.title} {item.id}</IonCardTitle>
                     </IonCardTitle>
                     <IonCardContent>
                         {item.body}
