@@ -1,51 +1,30 @@
 import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonCol, IonCard, IonItem, IonCardTitle, IonCardContent } from '@ionic/react';
-import { useParams } from 'react-router';
+import { useParams, useHistory } from 'react-router';
 import ExploreContainer from '../../components/ExploreContainer';
 import { IonButton } from '@ionic/react';
 import { useEffect, useState } from 'react';
-import { saveNews, searchNews } from './NewsApi';
+import { searchNews } from './NewsApi';
+import News from './News';
 
-const NewsList: React.FC = () => {
+const NewsList: React.FC = (props: any) => {
 
   const { name } = useParams<{ name: string; }>();
 
-  const [news, setNews] = useState<any>([]);
+  const [newss, setNews] = useState<News[]>([]);
+
+  const history = useHistory();
 
   useEffect(() => {
     search();
-  }, []);
+  }, [history.location.pathname]);
 
-  const search = () =>{
-    let resultado = searchNews();
+  const search = async () => {
+    let resultado = await searchNews();
     setNews(resultado);
   }
 
-  const pruebaLocalStorage = () =>{
-    const ejemplo = {
-        id:"123",
-        dato:"dati",
-        hora:"123"
-    }
-    saveNews(ejemplo);
-  }
+  
 
-  const datos = [
-    {
-      "id": "123",
-      "title":"1233234234",
-      "body":"12312312"
-    },
-    {
-      "id": "123",
-      "title":"1233234234",
-      "body":"12312312"
-    },
-    {
-      "id": "123",
-      "title":"1233234234",
-      "body":"12312312"
-    }
-  ]
 
   return (
     <IonPage>
@@ -76,26 +55,24 @@ const NewsList: React.FC = () => {
             </IonItem>
             <IonGrid className="table">
                 
-            {datos.map((item) => (
-                <IonRow key={item.id}>
+            {newss.map((noticia: News) => 
+                <IonRow>
                 <IonCol>
                     <IonCardTitle>
-                        <IonCardTitle>{item.title} {item.id}</IonCardTitle>
+                        <IonCardTitle>{noticia.titulo} {noticia.id}</IonCardTitle>
                     </IonCardTitle>
                     <IonCardContent>
-                        {item.body}
+                        {noticia.contenido}
                     </IonCardContent>
                     
                 </IonCol>
                 </IonRow>
-            ))}
+              )}
                 
                 
                 
             </IonGrid>
-            <IonItem>
-                <IonButton onClick={pruebaLocalStorage} color="primary" size="default" fill="solid"  slot="end">genera Storage</IonButton>
-            </IonItem>
+            
         </IonCard>
 
       </IonContent>
