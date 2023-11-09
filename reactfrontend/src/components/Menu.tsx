@@ -33,7 +33,7 @@ const appPages: AppPage[] = [
     url: '/page/Outbox',
     iosIcon: newspaper,
     mdIcon: paperPlaneSharp
-  },
+  }/* ,
   {
     title: 'Favorites',
     url: '/page/Favorites',
@@ -57,7 +57,7 @@ const appPages: AppPage[] = [
     url: '/page/Spam',
     iosIcon: warningOutline,
     mdIcon: warningSharp
-  }
+  } */
 ];
 
 const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
@@ -69,8 +69,8 @@ const Menu: React.FC = () => {
     <IonMenu contentId="main" type="overlay">
       <IonContent>
         <IonList id="inbox-list">
-          <IonListHeader>Inbox</IonListHeader>
-          <IonNote>hi@ionicframework.com</IonNote>
+          <IonListHeader>Menu</IonListHeader>
+          <IonNote></IonNote>
           {appPages.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
@@ -83,7 +83,7 @@ const Menu: React.FC = () => {
           })}
         </IonList>
 
-        <IonList id="labels-list">
+        {/* <IonList id="labels-list">
           <IonListHeader>Labels</IonListHeader>
           {labels.map((label, index) => (
             <IonItem lines="none" key={index}>
@@ -91,7 +91,7 @@ const Menu: React.FC = () => {
               <IonLabel>{label}</IonLabel>
             </IonItem>
           ))}
-        </IonList>
+        </IonList> */}
       </IonContent>
     </IonMenu>
   );

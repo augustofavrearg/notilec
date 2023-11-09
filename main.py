@@ -22,7 +22,7 @@ is_root_path = re.compile(r'^/.+$') #/some-text
 
 def _news_scraper(news_site_uid, db_config):
     host = config()['news_site'][news_site_uid]['url']
-    logging.info('Beggining scraper for {}'.format(host))
+    logging.info('Beginning scraper for {}'.format(host))
     homepage = news.HomePage(news_site_uid, host)
 
     articles = []
@@ -32,7 +32,7 @@ def _news_scraper(news_site_uid, db_config):
         if article:
             logger.info('Article fetched!')
             articles.append(article)
-            
+            article.download_images()  # Call the method to download images
 
     _save_articles(news_site_uid, articles)
     persist_articles_to_mysql(articles, db_config)
@@ -66,9 +66,12 @@ def persist_articles_to_mysql(articles, db_config):
                 
                 body = '\n'.join(article.body) if article.body else None
 
+                img = article.img if article.img else None
+
+
                 # Ejemplo de consulta SQL para insertar un artículo en la tabla
-                insert_query = "INSERT INTO articulos (titulo, contenido) VALUES (%s, %s)"
-                data = (title, body)
+                insert_query = "INSERT INTO articulos (titulo, contenido, img) VALUES (%s, %s, %s)"
+                data = (title, body, img)
 
                 cursor.execute(insert_query, data)
                 connection.commit()
